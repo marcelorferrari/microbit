@@ -29,9 +29,9 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
 function botaoA () {
     sentido = "cima"
     if (motor == "carro") {
-        moverCarro(255, 30000)
+        moverCarro(255, 3000)
     } else {
-        moverGuincho(255, 30000)
+        moverGuincho(255, 3000)
     }
 }
 input.onButtonPressed(Button.A, function () {
@@ -150,9 +150,9 @@ function moverGuincho (velocidade: number, duracao: number) {
 function botaoB () {
     sentido = "baixo"
     if (motor == "carro") {
-        moverCarro(-255, 30000)
+        moverCarro(-255, 4000)
     } else {
-        moverGuincho(-255, 30000)
+        moverGuincho(-255, 4000)
     }
 }
 let tempoAgora = 0
