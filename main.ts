@@ -59,6 +59,13 @@ function pararCarro () {
     Setas(movimento)
 }
 function Setas (icone: string) {
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        `)
     if (icone == "carro") {
         basic.showLeds(`
             . # # . .
@@ -97,10 +104,17 @@ function Setas (icone: string) {
     }
     if (icone == "ligado") {
         basic.showLeds(`
+            . . . . .
             . . # . .
-            . # . # .
-            # . # . #
-            . # . # .
+            . # # # .
+            . . # . .
+            . . . . .
+            `)
+        basic.showLeds(`
+            . . # . .
+            . # # # .
+            # # # # #
+            . # # # .
             . . # . .
             `)
     }
@@ -110,6 +124,20 @@ function Setas (icone: string) {
             . # . # .
             . . # . .
             . # . # .
+            # . . . #
+            `)
+        basic.showLeds(`
+            # . # . #
+            . # # # .
+            # # . # #
+            . # # # .
+            # . # . #
+            `)
+        basic.showLeds(`
+            # . . . #
+            . # # # .
+            . # . # .
+            . # # # .
             # . . . #
             `)
     }
