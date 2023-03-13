@@ -16,7 +16,6 @@ function iniciar () {
     sentido = "cima"
     tempo = 0
     tempoOperacao = 0
-    music.setVolume(255)
 }
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     music.playSoundEffect(music.builtinSoundEffect(soundExpression.giggle), SoundExpressionPlayMode.InBackground)
@@ -162,6 +161,7 @@ let motor = ""
 let tempoOperacao = 0
 let movimento = ""
 let tempo = 0
+music.setVolume(255)
 music.playSoundEffect(music.builtinSoundEffect(soundExpression.hello), SoundExpressionPlayMode.UntilDone)
 basic.showString("Olá!")
 iniciar()
