@@ -1,15 +1,3 @@
-function pararGuincho () {
-    tempo = 0
-    movimento = "desligado"
-    moverGuincho(0, 0)
-    Setas(movimento)
-}
-function moverCarro (velocidade: number, duracao: number) {
-    basic.showString("C")
-    tempo = duracao
-    tempoOperacao = input.runningTime()
-    robotbit.MotorRun(robotbit.Motors.M1A, velocidade)
-}
 function iniciar () {
     motor = "carro"
     movimento = "desligado"
@@ -18,44 +6,35 @@ function iniciar () {
     tempoOperacao = 0
 }
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    music.playSoundEffect(music.builtinSoundEffect(soundExpression.giggle), SoundExpressionPlayMode.InBackground)
     if (movimento == "desligado") {
         movimento = "ligado"
     } else {
         movimento = "desligado"
+        parar()
     }
     Setas(movimento)
+    music.playSoundEffect(music.builtinSoundEffect(soundExpression.slide), SoundExpressionPlayMode.InBackground)
 })
-function botaoA () {
-    sentido = "cima"
-    if (motor == "carro") {
-        moverCarro(255, 3000)
-    } else {
-        moverGuincho(255, 3000)
-    }
-}
 input.onButtonPressed(Button.A, function () {
-    music.playSoundEffect(music.builtinSoundEffect(soundExpression.soaring), SoundExpressionPlayMode.InBackground)
-    botaoA()
+    executar("cima", 255, 4000)
+    music.playSoundEffect(music.builtinSoundEffect(soundExpression.giggle), SoundExpressionPlayMode.InBackground)
 })
 input.onLogoEvent(TouchButtonEvent.LongPressed, function () {
-    music.playSoundEffect(music.builtinSoundEffect(soundExpression.mysterious), SoundExpressionPlayMode.InBackground)
     if (motor == "carro") {
         motor = "guincho"
     } else {
         motor = "carro"
     }
     Setas(motor)
+    music.playSoundEffect(music.builtinSoundEffect(soundExpression.mysterious), SoundExpressionPlayMode.InBackground)
 })
 input.onButtonPressed(Button.B, function () {
-    music.playSoundEffect(music.builtinSoundEffect(soundExpression.slide), SoundExpressionPlayMode.InBackground)
-    botaoB()
+    executar("baixo", -255, 4000)
+    music.playSoundEffect(music.builtinSoundEffect(soundExpression.giggle), SoundExpressionPlayMode.InBackground)
 })
-function pararCarro () {
-    tempo = 0
+function parar () {
     movimento = "desligado"
-    moverCarro(0, 0)
-    Setas(movimento)
+    executar(sentido, 0, 0)
 }
 function Setas (icone: string) {
     basic.showLeds(`
@@ -104,15 +83,15 @@ function Setas (icone: string) {
     if (icone == "ligado") {
         basic.showLeds(`
             . . . . .
-            . . # . .
             . # # # .
-            . . # . .
+            . # . # .
+            . # # # .
             . . . . .
             `)
         basic.showLeds(`
             . . # . .
             . # # # .
-            # # # # #
+            # # . # #
             . # # # .
             . . # . .
             `)
@@ -126,63 +105,51 @@ function Setas (icone: string) {
             # . . . #
             `)
         basic.showLeds(`
-            # . # . #
-            . # # # .
-            # # . # #
-            . # # # .
-            # . # . #
-            `)
-        basic.showLeds(`
-            # . . . #
-            . # # # .
+            . . . . .
             . # . # .
-            . # # # .
-            # . . . #
+            . . # . .
+            . # . # .
+            . . . . .
             `)
     }
 }
-function moverGuincho (velocidade: number, duracao: number) {
-    basic.showString("G")
-    tempo = duracao
-    tempoOperacao = input.runningTime()
-    robotbit.MotorRun(robotbit.Motors.M1B, velocidade)
-}
-function botaoB () {
-    sentido = "baixo"
-    if (motor == "carro") {
-        moverCarro(-255, 4000)
+function executar (S: string, V: number, T: number) {
+    sentido = S
+    if (movimento == "ligado") {
+        velocidade = V
+        tempo = T
+        tempoOperacao = input.runningTime()
     } else {
-        moverGuincho(-255, 4000)
+        velocidade = 0
+        tempo = 0
+    }
+    if (motor == "carro") {
+        basic.showString("C")
+        robotbit.MotorRun(robotbit.Motors.M1A, velocidade)
+    } else {
+        basic.showString("G")
+        robotbit.MotorRun(robotbit.Motors.M1B, velocidade)
     }
 }
 let tempoAgora = 0
-let sentido = ""
-let motor = ""
+let velocidade = 0
 let tempoOperacao = 0
-let movimento = ""
 let tempo = 0
+let sentido = ""
+let movimento = ""
+let motor = ""
 music.setVolume(255)
-music.playSoundEffect(music.builtinSoundEffect(soundExpression.hello), SoundExpressionPlayMode.UntilDone)
+music.playSoundEffect(music.builtinSoundEffect(soundExpression.slide), SoundExpressionPlayMode.UntilDone)
 basic.showString("Olá!")
 iniciar()
 basic.forever(function () {
     tempoAgora = input.runningTime()
     if (movimento == "ligado" && tempo > 0) {
-        Setas(sentido)
-        Setas(motor)
-        if (motor == "carro") {
-            if (tempoAgora - tempoOperacao > tempo) {
-                pararGuincho()
-            }
+        if (tempoAgora - tempoOperacao > tempo) {
+            parar()
         }
-        if (motor == "guincho") {
-            if (tempoAgora - tempoOperacao > tempo) {
-                pararGuincho()
-            }
-        }
-    } else {
-        Setas(movimento)
-        Setas(sentido)
-        Setas(motor)
     }
+    Setas(movimento)
+    Setas(sentido)
+    Setas(motor)
 })
